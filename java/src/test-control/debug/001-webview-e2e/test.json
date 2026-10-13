@@ -2,21 +2,24 @@
   "manifestVersion": 1,
   "protocolVersion": "2.0.0",
   "requestId": "java-template-webview-e2e",
-  "extensionId": "com.m8test.extension.language.java",
-  "languageEntryId": "java",
   "fileName": "main.java",
   "scriptFile": "main.java",
   "timeoutMillis": 30000,
   "properties": {},
   "components": [
     {
-      "name": "M8Test WebView Extension",
-      "version": "0.1.0",
-      "url": "https://example.invalid/m8test-webview-extension.apk",
-      "properties": {
-        "com.m8test.extension.id": "com.m8test.extension.webview"
-      }
+      "groupId": "com.m8test.extension",
+      "artifactId": "webview",
+      "version": "0.1.0"
     }
   ],
-  "expectedLogs": []
+  "expectedLogs": [
+    "java-template-webview-e2e:passed"
+  ],
+  "language": {
+    "groupId": "com.m8test.extension.language",
+    "artifactId": "java",
+    "version": "0.1.46",
+    "languageEntryId": "java"
+  }
 }

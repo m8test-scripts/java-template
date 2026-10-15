@@ -1,0 +1,19 @@
+{
+  "manifestVersion": 1,
+  "protocolVersion": "2.0.0",
+  "requestId": "java-template-jvm-interop",
+  "fileName": "main.java",
+  "scriptFile": "main.java",
+  "timeoutMillis": 30000,
+  "properties": {},
+  "components": [],
+  "expectedLogs": [
+    "java-template-jvm-interop:passed"
+  ],
+  "language": {
+    "groupId": "com.m8test.extension.language",
+    "artifactId": "java",
+    "version": "0.1.46",
+    "languageEntryId": "java"
+  }
+}

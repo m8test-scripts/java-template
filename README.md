@@ -102,3 +102,35 @@ java/
 最终 SPA 的根目录不是 `build/spa/files`，后者只是临时 staging 目录。SPA 解包后应直接包含 `project.config.json`、`src/`、`init/`、`lib/`、`res/`、`webview/` 和可选的 `extension/`。
 
 Java 入口使用 Janino 执行，并通过 `ComposeView` 创建脚本 UI。模板中的 `sides` 是独立 side 脚本入口；它们与主入口共享同一 Engine，但不会重复启动主项目。
+
+## APK 启动策略
+
+应用身份在 `projectConfig` 中设置：`name` 是显示名称，`packageName` 是唯一包名，`versionName` 与 `versionCode` 控制版本，`logo` 指向 `res` 下的图标。构建生成的脚本配置会将这些值应用到 APK。`appName`、`appVersionName` 和 `appVersionCode` Gradle 属性可覆盖名称和版本。默认安装后自动运行脚本。需要由用户点击运行时，在语言配置块中选择手动启动：
+
+```kotlin
+m8testJava {
+    apkBuild {
+        launchMode = "manual"
+    }
+}
+```
+
+`launchMode` 只接受 `"automatic"` 或 `"manual"`。手动模式显示启动页，由用户决定何时运行。
+
+## 发布签名
+
+APK 默认使用开发签名。发布时设置 `signingMode = "release"`，并从环境变量提供密码：
+
+```kotlin
+m8testJava {
+    apkBuild {
+        signingMode = "release"
+        releaseKeyStore = file("signing/release.p12")
+        releaseKeyAlias = "application"
+        releaseStorePassword = providers.environmentVariable("M8TEST_RELEASE_STORE_PASSWORD")
+        releaseKeyPassword = providers.environmentVariable("M8TEST_RELEASE_KEY_PASSWORD")
+    }
+}
+```
+
+发布 APK 在本机签名并验证，输出到 `build/apk/`。密钥库和密码不会进入生成源码或设备项目。缺少发布签名配置时构建会失败，不会使用开发密钥代替。请把密钥库保存在受控位置并排除在版本控制之外；JDK `keytool` 可用于生成、导入和导出密钥材料。

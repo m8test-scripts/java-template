@@ -118,7 +118,7 @@ m8testJava {
 }
 ```
 
-`launchMode` 只接受 `"automatic"` 或 `"manual"`。手动模式显示启动页，由用户决定何时运行。
+`launchMode` 只接受 `"automatic"` 或 `"manual"`。手动模式显示启动页，由用户决定何时运行。运行环境入口默认随 `launchMode` 显示：手动启动时显示，自动启动时隐藏。可在 `apkBuild` 中设置 `runtimeEnvironmentVisible = true` 或 `false` 显式覆盖；启动失败时仍提供恢复入口。
 
 ## 发布签名
 

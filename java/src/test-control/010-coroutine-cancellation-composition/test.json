@@ -1,0 +1,31 @@
+{
+  "manifestVersion": 1,
+  "protocolVersion": "2.0.0",
+  "requestId": "java-template-coroutine-cancellation-composition",
+  "fileName": "main.java",
+  "scriptFile": "main.java",
+  "timeoutMillis": 10000,
+  "properties": {
+    "m8test.testControl.adbPort": "5555"
+  },
+  "components": [],
+  "expectedLogs": [
+    "coroutine:java:timeout-cancellation-preserved",
+    "coroutine:java:timeout-or-null-ok",
+    "coroutine:java:timeout-or-null-complete:false",
+    "coroutine:java:loop-timeout-cancelled-wait",
+    "coroutine:java:loop-iteration:1",
+    "coroutine:java:loop-iteration:2",
+    "coroutine:java:loop-iteration:3",
+    "coroutine:java:loop-completed-count:3",
+    "coroutine:java:composed-wait-ok",
+    "coroutine:java:composed-wait-complete:false",
+    "coroutine:java:cancellation-gate"
+  ],
+  "language": {
+    "groupId": "com.m8test.extension.language",
+    "artifactId": "java",
+    "version": "0.1.46",
+    "languageEntryId": "java"
+  }
+}

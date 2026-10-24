@@ -1,0 +1,27 @@
+{
+  "manifestVersion": 1,
+  "protocolVersion": "2.0.0",
+  "requestId": "java-template-thread-timer-context",
+  "fileName": "main.java",
+  "scriptFile": "main.java",
+  "timeoutMillis": 30000,
+  "properties": {
+    "m8test.testControl.adbPort": "5555"
+  },
+  "components": [],
+  "expectedLogs": [
+    "thread-context:java:immediate",
+    "thread-context:java:timeout",
+    "thread-context:java:interval",
+    "thread-context:java:thread",
+    "thread-context:java:thread-start",
+    "thread-context:java:thread-exit",
+    "thread-context:java:verified"
+  ],
+  "language": {
+    "groupId": "com.m8test.extension.language",
+    "artifactId": "java",
+    "version": "0.1.46",
+    "languageEntryId": "java"
+  }
+}

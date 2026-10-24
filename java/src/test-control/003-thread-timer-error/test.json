@@ -1,0 +1,14 @@
+{
+  "manifestVersion": 1,
+  "protocolVersion": "2.0.0",
+  "requestId": "java-template-thread-timer-error",
+  "fileName": "main.java",
+  "scriptFile": "main.java",
+  "timeoutMillis": 30000,
+  "properties": { "m8test.testControl.adbPort": "5555" },
+  "components": [],
+  "expectedLogs": ["thread-context:java:timer-error"],
+  "expectedOutcome": "scriptError",
+  "expectedErrorContains": "expected timer callback failure",
+  "language": { "groupId": "com.m8test.extension.language", "artifactId": "java", "version": "0.1.46", "languageEntryId": "java" }
+}

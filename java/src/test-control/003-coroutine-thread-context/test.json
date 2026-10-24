@@ -1,0 +1,38 @@
+{
+  "manifestVersion": 1,
+  "protocolVersion": "2.0.0",
+  "requestId": "java-template-coroutine-thread-context",
+  "fileName": "main.java",
+  "scriptFile": "main.java",
+  "timeoutMillis": 30000,
+  "properties": {
+    "m8test.testControl.adbPort": "5555"
+  },
+  "components": [],
+  "expectedLogs": [
+    "coroutine:java:launch",
+    "coroutine:java:async",
+    "coroutine:java:async-success",
+    "coroutine:java:with-context",
+    "coroutine:java:flow:1",
+    "coroutine:java:flow:2",
+    "coroutine:java:flow-complete",
+    "coroutine:java:flow-catch:flow-boom",
+    "coroutine:java:flow-completion:true",
+    "coroutine:java:flow-recovered:[9]",
+    "coroutine:java:buffer-ok",
+    "coroutine:java:debounce-ok",
+    "coroutine:java:sample-ok",
+    "coroutine:java:timeout-observed",
+    "coroutine:java:channel-cleanup",
+    "coroutine:java:callback-flow-ok",
+    "coroutine:java:cancelled-work-complete",
+    "coroutine:java:gate"
+  ],
+  "language": {
+    "groupId": "com.m8test.extension.language",
+    "artifactId": "java",
+    "version": "0.1.46",
+    "languageEntryId": "java"
+  }
+}

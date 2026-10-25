@@ -1,0 +1,13 @@
+{
+  "manifestVersion": 1,
+  "protocolVersion": "2.0.0",
+  "requestId": "java-template-coroutine-context-nesting",
+  "fileName": "main.java",
+  "scriptFile": "main.java",
+  "timeoutMillis": 30000,
+  "properties": { "m8test.testControl.adbPort": "5555" },
+  "components": [],
+  "expectedLogs": ["nest:java:outer-started", "nest:java:outer-resumed", "nest:java:inner-callback", "nest:java:other-task-progressed", "nest:java:delay-resumed", "nest:java:gate"],
+  "expectedOutcome": "succeeded",
+  "language": { "groupId": "com.m8test.extension.language", "artifactId": "java", "version": "0.1.46", "languageEntryId": "java" }
+}

@@ -1,14 +1,44 @@
 import static com.m8test.script.GlobalVariables.*;
 var scope = $coroutines.newScope(null);
 var timer = $script.getThreads().getMain().getTimer();
+scope.launch(context -> {
+    context.setName("script-main");
+    context.setDispatcher(dispatchers -> dispatchers.getScriptMain());
+    if (!"script-main".equals(context.getName())) throw new RuntimeException("coroutine context name mismatch");
+    return null;
+}, null, s -> {
+    if (!$script.getThreads().getCurrent().isCurrent()) throw new RuntimeException("script-main dispatcher mismatch");
+    $logger.info("coroutine:java:script-main-verified");
+    return null;
+});
+final String capturedScriptValue = "java-captured";
+final boolean[] otherTaskProgress = {false};
+timer.setTimeout(params -> { otherTaskProgress[0] = true; $logger.info("coroutine:java:other-task-progressed"); return null; }, 50L);
+scope.launch(context -> { context.setDispatcher(dispatchers -> dispatchers.getIO()); return null; }, null, s -> {
+    if (!"java-captured".equals(capturedScriptValue)) throw new RuntimeException("captured script value mismatch");
+    $logger.info("coroutine:java:io-captured-value-verified");
+    return null;
+});
+scope.delay(200L).onSuccess(value -> {
+    if (!"java-captured".equals(capturedScriptValue)) throw new RuntimeException("delayed script value mismatch");
+    if (!otherTaskProgress[0]) throw new RuntimeException("other task did not progress during delay");
+    $logger.info("coroutine:java:delayed-captured-value-verified");
+});
 scope.launch(null, null, s -> { $logger.info("coroutine:java:launch"); return null; });
 scope._async(null, null, s -> { $logger.info("coroutine:java:async"); return 7; })
-    .onSuccess(value -> { $logger.info("coroutine:java:async-success"); });
+    .onSuccess(value -> {
+        if (!"7".equals(String.valueOf(value))) throw new RuntimeException("async value mismatch: " + value);
+        $logger.info("coroutine:java:async-success");
+    });
 scope.withContext(context -> null, s -> { $logger.info("coroutine:java:with-context"); return 9; });
 $coroutines.getFlows().of(1, 2).map((s, value) -> {
     $logger.info("coroutine:java:flow:" + value);
     return s.resolve(((Number) value).intValue() * 2);
-}).toList(scope).onSuccess(values -> { $logger.info("coroutine:java:flow-complete"); });
+}).toList(scope).onSuccess(values -> {
+    if (values.size() != 2 || !"2".equals(String.valueOf(values.get(0))) || !"4".equals(String.valueOf(values.get(1))))
+        throw new RuntimeException("flow mapped values mismatch: " + values);
+    $logger.info("coroutine:java:flow-complete");
+});
 scope.delay(5000L).onComplete(() -> $logger.info("coroutine:java:cancelled-work-complete"));
 final Object[] recovered = new Object[1];
 $coroutines.getFlows().create((s, collector) -> { throw new RuntimeException("flow-boom"); })

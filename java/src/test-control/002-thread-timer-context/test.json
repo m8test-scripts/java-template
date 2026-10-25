@@ -15,8 +15,10 @@
     "thread-context:java:interval",
     "thread-context:java:thread",
     "thread-context:java:thread-start",
+    "thread-context:java:verified",
+    "thread-context:java:thread-interrupt",
     "thread-context:java:thread-exit",
-    "thread-context:java:verified"
+    "thread-context:java:worker-timer"
   ],
   "language": {
     "groupId": "com.m8test.extension.language",

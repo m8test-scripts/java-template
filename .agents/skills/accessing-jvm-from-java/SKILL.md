@@ -1,42 +1,23 @@
 ---
 name: accessing-jvm-from-java
-description: 当 Java 脚本需要访问 JVM 类、调用 Java/Kotlin 成员或传递函数 callback 时使用。
+description: 从 M8Test Java/Janino 脚本访问 JVM 类型、调用成员、传递 lambda 或使用宿主 wrappers 时使用。
 ---
 
-# 从 Java 访问 JVM
+# 从 Java 脚本访问 JVM
 
-Java 项目脚本由 Janino 执行，构建时将 .java 转为设备执行用的 .javas。按 Java 编译器规则写 import、局部类型与 lambda；全局变量使用生成源码所示的注入形式。
-
-## 类与对象
+此模板由 Janino 执行，并可能把 `.java` 转为设备执行用源码。按当前生成结果写 import、局部类型和 lambda；不要把编译补全当成运行时依赖可见的证据。通用宿主 wrapper 语义见 `using-host-values-and-wrappers`。
 
 ```java
 StringBuilder builder = new StringBuilder("M8Test");
 builder.append(" Java");
-if (!"M8Test Java".equals(builder.toString())) throw new AssertionError("StringBuilder");
+if (!"M8Test Java".equals(builder.toString())) throw new AssertionError();
+
+int[] raw = $arrays.intArrayOf(3, 1, 2);
+var values = $objectWrappers.wrapIntArray(raw);
+values.set(0, 7);
+if (values.getSize() != 3 || !values.contains(7)) throw new AssertionError();
 ```
 
-先确认依赖已加载到当前脚本 classloader。声明文件或代码补全存在不等于运行时类可见。方法重载、静态字段、嵌套类、异常等边界按目标语言的生成代码和实际设备行为验证。
+Java lambda 仅传给签名兼容的 SAM/function type；验证真实参数、返回和调用时机。按 Java 声明处理 primitive、boxed、数组与泛型；重载、异步 callback、异常和依赖加载必须按目标接口实测。
 
-## 函数 callback
-
-Java lambda 可传给 SAM 和目标签名兼容的 Kotlin 函数类型。模板 primary.java 中 Compose 调用是 callback 实例。
-
-## 函数 callback 示例
-
-Java lambda 可以按目标 Kotlin 函数类型传入 callback。模板 Test Control 通过 Logger.withContext 实际验证 callback 被调用并获得参数：
-
-```java
-final boolean[] called = new boolean[] { false };
-$logger.withContext(context -> { called[0] = context != null; return null; });
-if (!called[0]) throw new AssertionError("callback");
-```
-
-## 类型转换边界
-
-按 Java 声明提供准确 primitive、boxed、数组和泛型类型。编译通过不代表运行时依赖加载成功；重载及异常边界需要设备验证。
-
-逐项记录已测试的 primitive/boxed、字符串、nullable、数组、集合、varargs、重载和异常行为。未经执行验证的转换写为待验证，不根据其他脚本语言推断。
-
-## 验证
-
-本模板的 java-template-jvm-interop Test Control 场景会实际调用 JVM StringBuilder，并验证宿主数组工厂和 wrapper。运行当前项目支持的选中 Test Control 任务并检查 summary 中该 requestId 为 passed；若当前模板没有注册相应任务，使用模板设备运行任务并确认成功日志。Gradle 使用 -q。
+修改互操作示例时更新 Java JVM interop Test Control 断言，并用目标引擎验证；编译通过不证明 Janino 运行时可调用。

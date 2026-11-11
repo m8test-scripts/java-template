@@ -1,0 +1,4 @@
+import com.example.tool.ToolB;
+import static com.m8test.script.GlobalVariables.*;
+ToolB tool = new ToolB();
+tool.methodB($logger);

@@ -21,7 +21,7 @@ class primary {
                         button.setContent(row -> row.Text(text ->
                             text.setText($stringResources.getString("demo.counter.button"))
                         ));
-                        button.setOnClick(() -> state.setValue(state.getValue() + 1));
+                        button.onClick(() -> state.setValue(state.getValue() + 1));
                     });
                     content.Text(text -> text.setText($stringResources.getString("demo.language")));
                 });
